@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Pra Mi Gatita</title>
+    <title>Para Mi Gatita</title>
+    <link rel="icon" href="/static/logo.png" type="image/png">
     <style>
         body {
             background-image: url('/static/fondo_personalizado.png');
@@ -79,14 +80,49 @@
             background-size: contain;
             animation: heartAnimation 3s linear infinite;
         }
+
+        .volume-control {
+            display: none;
+            position: absolute;
+            top: -100px;
+            right: 20px;
+            text-align: right;
+            color: white;
+            font-size: 14px;
+            animation: slideDown 0.8s forwards;
+        }
+
+        .volume-control.show {
+            display: block;
+        }
+
+        .volume-control label {
+            display: block;
+        }
+
+        @keyframes slideDown {
+            0% {
+                top: -100px;
+            }
+            100% {
+                top: 20px;
+            }
+        }
     </style>
     <script>
         function expandImage() {
             var card = document.querySelector('.card');
             var expandedImage = document.querySelector('.expanded-image');
+            var volumeControl = document.querySelector('.volume-control');
 
             card.style.display = 'none';
             expandedImage.classList.add('show');
+            volumeControl.classList.add('show');
+
+            // Reproducir la música
+            var backgroundMusic = document.getElementById('background-music');
+            backgroundMusic.volume = 0.2;
+            backgroundMusic.play();
 
             setInterval(function() {
                 var hearts = document.querySelectorAll('.heart');
@@ -130,17 +166,41 @@
                 .then(response => response.text())
                 .then(message => console.log(message));
         }
+
+        function changeVolume(volume) {
+            var backgroundMusic = document.getElementById('background-music');
+            backgroundMusic.volume = volume;
+        }
     </script>
 </head>
 <body>
+    <audio id="background-music" src="/static/cancion.mp3" loop preload></audio>
+
     <div class="card" onclick="expandImage()">
-        <!-- Aquí puedes agregar el contenido de la carta -->
+        <!-- Contenido de la carta -->
         <img src="/static/imagen_carta.png" alt="Carta" width="150">
     </div>
 
     <div class="expanded-image">
-        <!-- Aquí puedes agregar la imagen expandida -->
+        <!-- Imagen expandida -->
         <img src="/static/imagen_expandida.png" alt="Imagen Expandida">
+    </div>
+
+    <div class="volume-control">
+        <label for="volume-range">Control de Volumen:</label>
+        <input type="range" id="volume-range" min="0" max="1" step="0.1" value="0.2" onchange="changeVolume(this.value)">
     </div>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
